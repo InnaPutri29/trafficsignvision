@@ -157,7 +157,7 @@ if menu == "🏠 Beranda":
         
         **Salah mengartikan** rambu bisa berbahaya. TrafficSignVision hadir sebagai solusi belajar yang mudah untuk **membantu masalah ini**.
         
-        ### Fitur Utama Kami:
+        ### Fitur Utama:
         * **📤 Klasifikasi via Upload:** Unggah gambar rambu dari galeri Anda.
         * **📸 Deteksi via Webcam:** Gunakan kamera Anda untuk memindai rambu secara langsung.
         * **💡 Hasil Akurat:** Dapatkan nama rambu beserta tingkat keyakinan (akurasi) prediksinya.
