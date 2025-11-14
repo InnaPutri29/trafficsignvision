@@ -1,0 +1,29 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# Virtual environments
+.env
+.venv
+env/ 
+venv/
+ENV/
+my_env/
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Streamlit cache & logs
+.streamlit/cache/
+.streamlit/secrets.toml
+
+# Jupyter Notebook checkpoints 
+.ipynb_checkpoints/
+
+# OS
+.DS_Storemy
+Thumbs.db
