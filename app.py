@@ -99,11 +99,10 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     try:
-        # Pastikan file model ada di folder 'models'
         model = tf.keras.models.load_model("models/TrafficSignVision.h5")
         return model
     except Exception as e:
-        st.error(f"⚠️ Model tidak ditemukan. Pastikan file ada di folder 'models/'.")
+        st.error("⚠️ Model tidak ditemukan. Pastikan file ada di folder 'models/'.")
         return None
 
 model = load_model()
@@ -122,6 +121,52 @@ class_labels = [
     'Keep left', 'Roundabout mandatory', 'End of no passing', 'End of no passing by vehicles > 3.5 tons'
 ]
 
+class_labels_id = {
+    'Speed limit (20km/h)': 'Batas kecepatan 20 km/jam',
+    'Speed limit (30km/h)': 'Batas kecepatan 30 km/jam',
+    'Speed limit (50km/h)': 'Batas kecepatan 50 km/jam',
+    'Speed limit (60km/h)': 'Batas kecepatan 60 km/jam',
+    'Speed limit (70km/h)': 'Batas kecepatan 70 km/jam',
+    'Speed limit (80km/h)': 'Batas kecepatan 80 km/jam',
+    'End of speed limit (80km/h)': 'Akhir batas kecepatan 80 km/jam',
+    'Speed limit (100km/h)': 'Batas kecepatan 100 km/jam',
+    'Speed limit (120km/h)': 'Batas kecepatan 120 km/jam',
+    'No passing': 'Dilarang menyalip',
+    'No passing for vehicles over 3.5 metric tons': 'Dilarang menyalip kendaraan >3,5 ton',
+    'Right-of-way at the next intersection': 'Prioritas di persimpangan berikutnya',
+    'Priority road': 'Jalan utama',
+    'Yield': 'Memberi jalan',
+    'Stop': 'Berhenti',
+    'No vehicles': 'Kendaraan dilarang',
+    'Vehicles over 3.5 metric tons prohibited': 'Kendaraan >3,5 ton dilarang',
+    'No entry': 'Dilarang masuk',
+    'General caution': 'Hati-hati',
+    'Dangerous curve to the left': 'Tikungan tajam ke kiri',
+    'Dangerous curve to the right': 'Tikungan tajam ke kanan',
+    'Double curve': 'Tikungan ganda',
+    'Bumpy road': 'Jalan bergelombang',
+    'Slippery road': 'Jalan licin',
+    'Road narrows on the right': 'Jalan menyempit di kanan',
+    'Road work': 'Pekerjaan jalan',
+    'Traffic signals': 'Lampu lalu lintas',
+    'Pedestrians': 'Pejalan kaki',
+    'Children crossing': 'Anak-anak menyeberang',
+    'Bicycles crossing': 'Sepeda menyeberang',
+    'Beware of ice/snow': 'Waspada es/salju',
+    'Wild animals crossing': 'Hewan liar menyeberang',
+    'End of all speed and passing limits': 'Akhir semua batas kecepatan dan larangan menyalip',
+    'Turn right ahead': 'Belok kanan',
+    'Turn left ahead': 'Belok kiri',
+    'Ahead only': 'Maju saja',
+    'Go straight or right': 'Maju atau belok kanan',
+    'Go straight or left': 'Maju atau belok kiri',
+    'Keep right': 'Tetap di kanan',
+    'Keep left': 'Tetap di kiri',
+    'Roundabout mandatory': 'Bundaran wajib',
+    'End of no passing': 'Akhir larangan menyalip',
+    'End of no passing by vehicles > 3.5 tons': 'Akhir larangan menyalip kendaraan >3,5 ton'
+}
+
 # ==========================
 # 4. NAVIGASI (SIDEBAR)
 # ==========================
@@ -138,8 +183,6 @@ menu = st.sidebar.radio(
 # ==========================
 # 5. KONTEN HALAMAN
 # ==========================
-
-# --- HALAMAN BERANDA ---
 if menu == "🏠 Beranda":
     st.title("🚦 TrafficSignVision")
     st.subheader("Kenali Rambu Lalu Lintas dengan Cepat")
@@ -168,14 +211,12 @@ if menu == "🏠 Beranda":
         st.button("🚀 Coba Klasifikasi Sekarang", on_click=pindah_ke_klasifikasi)
 
     with col2:
-        # --- GAMBAR GIF PIXABAY (dengan use_container_width) ---
         st.image(
             "https://cdn.pixabay.com/animation/2023/06/13/15/13/15-13-03-816_512.gif",
             caption="Mendeteksi rambu lalu lintas...",
-            use_container_width=True # <-- Perbaikan ukuran GIF
+            use_container_width=True
         )
 
-# --- HALAMAN FITUR KLASIFIKASI ---
 elif menu == "🔍 Fitur Klasifikasi":
     st.title("🔍 Deteksi Rambu")
     st.write("Pilih metode input gambar di bawah ini:")
@@ -191,7 +232,6 @@ elif menu == "🔍 Fitur Klasifikasi":
         camera_image = st.camera_input("Arahkan rambu ke kamera")
         if camera_image: input_image = camera_image
 
-    # --- PROSES ANALISIS ---
     if input_image is not None:
         st.markdown("---")
         col1, col2, col3 = st.columns([1, 2, 1])
@@ -217,8 +257,8 @@ elif menu == "🔍 Fitur Klasifikasi":
                         confidence = float(np.max(prediction)) * 100
 
                         st.success("Selesai!")
-                        
-                        # Tampilan Hasil dengan Margin & Shadow
+
+                        # Hasil Prediksi Inggris
                         st.markdown(f"""
                         <div style="
                             background-color: #d8f3dc;
@@ -234,38 +274,48 @@ elif menu == "🔍 Fitur Klasifikasi":
                         </div>
                         """, unsafe_allow_html=True)
 
+                        # Hasil Prediksi Bahasa Indonesia
+                        st.markdown(f"""
+                        <div style="
+                            margin-top:5px; 
+                            padding:10px; 
+                            background-color:#e0f7fa; 
+                            border-radius:8px;
+                        ">
+                            <p style="margin:0; color:#00796b;">
+                                <b>Terjemahan (Bahasa Indonesia):</b> {class_labels_id[class_labels[predicted_class]]}
+                            </p>
+                        </div>
+                        """, unsafe_allow_html=True)
+
+                        # Statistik 3 Tebakan Teratas
                         with st.expander("Lihat Detail Statistik"):
                             probs = dict(zip(class_labels, prediction[0]))
                             sorted_probs = sorted(probs.items(), key=lambda x: x[1], reverse=True)
                             for label, prob in sorted_probs[:3]:
                                 st.progress(float(prob))
-                                st.caption(f"{label} ({prob*100:.2f}%)")
+                                st.caption(f"{label} ({prob*100:.2f}%) - {class_labels_id[label]}")
 
-# --- HALAMAN TENTANG APLIKASI ---
 elif menu == "ℹ️ Tentang Aplikasi": 
-    
     st.title("ℹ️ Tentang TrafficSignVision")
     st.write("") 
 
-    # --- Gambaran Proyek ---
     st.subheader("Gambaran Proyek")
     st.markdown("""
     TrafficSignVision adalah platform berbasis web untuk klasifikasi simbol rambu lalu lintas. 
-    
-    Dengan memanfaatkan model *Machine Learning* canggih yang dikenal sebagai **Convolutional Neural Network (CNN)**, aplikasi ini menyediakan identifikasi instan terhadap gambar yang diunggah, baik dari file maupun kamera.
+    Dengan memanfaatkan model *Machine Learning* canggih (**CNN**), aplikasi ini menyediakan identifikasi instan terhadap gambar yang diunggah, baik dari file maupun kamera.
     """)
 
     st.markdown("---") 
 
-    # --- Sumber Data (Bagaimana Model Dilatih) ---
     st.subheader("Bagaimana Model Ini Dilatih?")
     st.markdown("""
     Model ini dilatih menggunakan dataset publik **GTSRB (German Traffic Sign Recognition Benchmark)**. 
     Dataset ini sangat besar, berisi lebih dari 39.000 gambar rambu lalu lintas yang dibagi menjadi 43 jenis (kelas).  
     """)
-    
+
 # ==========================
-# 6. FOOTER GLOBAL
+# 6. FOOTER GLOBAL (HANYA BERANDA & TENTANG)
 # ==========================
 def show_footer():
     st.markdown("""
@@ -274,4 +324,6 @@ def show_footer():
     </div>
     """, unsafe_allow_html=True)
 
-show_footer()
+# Panggil footer hanya jika menu saat ini Beranda atau Tentang Aplikasi
+if menu in ["🏠 Beranda", "ℹ️ Tentang Aplikasi"]:
+    show_footer()
