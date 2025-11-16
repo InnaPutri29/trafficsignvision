@@ -302,8 +302,9 @@ elif menu == "ℹ️ Tentang Aplikasi":
 
     st.subheader("Gambaran Proyek")
     st.markdown("""
-    TrafficSignVision adalah platform berbasis web untuk klasifikasi simbol rambu lalu lintas. 
-    Dengan memanfaatkan model *Machine Learning* canggih (**CNN**), aplikasi ini menyediakan identifikasi instan terhadap gambar yang diunggah, baik dari file maupun kamera.
+    TrafficSignVision adalah platform berbasis web untuk klasifikasi simbol rambu lalu lintas.  
+    Dengan memanfaatkan model *Machine Learning* canggih berupa Convolutional Neural Network (**CNN**), aplikasi ini mampu mengenali pola visual pada gambar rambu, seperti bentuk, warna, dan simbol, sehingga dapat mengklasifikasikan rambu secara instan.  
+    Model ini dapat bekerja baik pada gambar yang diunggah maupun melalui kamera secara langsung, memberikan nama rambu beserta tingkat keyakinannya secara real-time.
     """)
 
     st.markdown("---") 
